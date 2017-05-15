@@ -2,7 +2,7 @@
 
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>Monitor - Demo Hamilton Matos</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -11,12 +11,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link href='//fonts.googleapis.com/css?family=Acme' rel='stylesheet'>
         <link href='//fonts.googleapis.com/css?family=Capriola' rel='stylesheet'>
-
-
-
     </head>
-
-
 
     <!--<body style="background-color: black">-->
     <body>
@@ -50,17 +45,7 @@
             .thLike {
                 background-color: lightblue;
             }
-
-            /*            .info-box {
-                            display: block;
-                            min-height: 90px;
-                            background: #fff;
-                            width: 100%;
-                            box-shadow: 0 1px 1px rgba(0,0,0,0.1);
-                            border-radius: 2px;
-                            margin-bottom: 15px;
-                        }*/
-
+            
             .info-box-icon {
                 border-top-left-radius: 2px;
                 border-top-right-radius: 0;
@@ -90,7 +75,7 @@
             .list-group-item{
                 min-height: 50px;
                 font-size: 17px;
-               
+
             }
 
             canvas{
@@ -182,12 +167,6 @@
 
         </div>
 
-
-
-
-
-
-
         <script src="js/libs/jquery/jquery.min.js" type="text/javascript"></script>
         <script src="js/libs/d3/d3.v3.js" type="text/javascript"></script>
         <script src="js/libs/d3/legend.js" type="text/javascript"></script>
@@ -200,14 +179,12 @@
             var totals = [0, 0, 0, 0, 0, 0];
             var c20 = d3.scale.category20();
 
-            ///////////////this function generates the date and time in milliseconds//////////
             function getTimeValue() {
                 var dateBuffer = new Date();
                 var Time = dateBuffer.getTime();
                 return Time;
             }
-
-            ////////////// this function generates a random value ////////////////////////////
+      
             function getRandomValue() {
                 var randomValue = Math.random() * 10;
                 return Math.floor(randomValue);
@@ -238,8 +215,6 @@
                     d3.select('#' + moduleNames[i]).text(totals[i]);
                 }
 
-
-
                 dataUpdate = [
                     {label: "IMN", values: [newLineChartRandomData[0]]},
                     {label: "IM_FU", values: [newLineChartRandomData[1]]},
@@ -251,10 +226,7 @@
 
                 data = data.concat(dataUpdate);
                 updateData(data);
-
-
             }
-            ////////////// real time graph generation////////////////////////////////////////	  
 
             var leftRange = [0, 100];
 
@@ -267,16 +239,13 @@
                 {label: "IM_CM", values: [{time: getTimeValue(), y: 0, status: 'sucesso'}]},
             ];
 
-
             var areaChartInstance = $('#areaChart').epoch({
                 type: 'time.area',
                 data: data,
                 axes: ['right', 'bottom', 'left'],
 //                ticks: {time: 4},
                 fps: 60
-
             });
-
 
             function infiniteLoop() {
                 updateAreaChart();
@@ -284,10 +253,6 @@
                 setTimeout(infiniteLoop, 1000);
             }
             setTimeout(infiniteLoop, 1000);
-
-
-
-
 
             var svgContainer = d3.select("#legenda-row");
 
@@ -297,13 +262,11 @@
                     .append("div").attr("class", "col-md-2 info-box")
                     ;
 
-
-
             var modules = options
                     .append("span")
                     .attr("class", "info-box-icon")
                     .style("background", function (d, i) {
-                        return c20(i);
+                        return c20(d);
                     })
                     .style("color", "white")
                     .text(function (d) {
@@ -321,14 +284,11 @@
 
                     ;
 
-
-
             function updateData(data) {
                 var item = d3.select('#items')
                         .selectAll('li')
                         .data(data);
 
-// Enter
                 item
                         .enter()
                         .append('li')
@@ -340,7 +300,7 @@
                             return '<div ">' + d.label + ' ' + d.values[0].y + ' ' + d.values[0].status + '</div>';
                         });
 
-// Update
+
                 item
 
                         .html(function (d) {
@@ -350,9 +310,6 @@
                             return '<div class="col-md-3">' + d.label + '</div><div class="col-md-3">' + d.values[0].y + '</div><div class="col-md-3">' + (d.values[0].status === 'sucesso' ? '<i class="fa fa-check-square"></i>' : '<i class="fa fa-dashboard"></i>') + '</div>';
                         });
 
-//                          (d.values[0].status === 'sucesso' ? '<i class="fa fa-dashboard"></i>' : '<i class="fa fa-dashboard"></i>')
-
-// Exit
                 item.exit().remove();
 
                 var objDiv = document.getElementById("items");
